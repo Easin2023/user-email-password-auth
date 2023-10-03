@@ -2,11 +2,17 @@ import { Link } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import auth from "../../Firebase/firebase";
 import { AiFillEye,AiFillEyeInvisible } from 'react-icons/ai';
+import { useState } from "react";
 
 
 const Register = () => {
 
+     const [showPassword, setShowPassword] = useState(false);
+     const [success, setSuccess] = useState('');
+
+
      const RegisterForm = e => {
+          setSuccess('');
           e.preventDefault();
           const email = e.target.email.value;
           const password = e.target.password.value;
@@ -15,6 +21,7 @@ const Register = () => {
           .then(result => {
                const user = result.user
                console.log(user);
+              setSuccess('Your Register success full')
           })
           .catch(error => {
                console.log(error)
@@ -33,11 +40,15 @@ const Register = () => {
         </div>
         <form onSubmit={RegisterForm}>
           <div className="flex flex-col gap-4 p-6">
+              {
+                success && <p className="text-green-600"><small>{success}</small></p>
+              }
             <div className="relative h-11 w-full min-w-[200px]">
               <input
                 className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 placeHolder=" "
                 name="email"
+                required
               />
               <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-pink-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-pink-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-pink-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                 Email
@@ -49,13 +60,14 @@ const Register = () => {
                 className="peer h-full w-full rounded-md border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-3 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-pink-500 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
                 placeHolder=" "
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
+                required
               />
               <label className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none text-[11px] font-normal leading-tight text-blue-gray-400 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[4.1] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-pink-500 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-pink-500 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-pink-500 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
                 Password
               </label>
             </div>
-            <span className="absolute text-2xl bottom-3 lg:left-[300px]"><AiFillEyeInvisible/></span>
+            <span onClick={() => setShowPassword(!showPassword)} className="absolute text-2xl bottom-3 lg:left-[300px]">{showPassword ? <AiFillEye/> : <AiFillEyeInvisible/>}</span>
             </div>
             <div className="-ml-2.5">
               <div className="inline-flex items-center">
@@ -69,7 +81,8 @@ const Register = () => {
                     className="before:content[''] peer relative h-5 w-5 cursor-pointer appearance-none rounded-md border border-blue-gray-200 transition-all before:absolute before:top-2/4 before:left-2/4 before:block before:h-12 before:w-12 before:-translate-y-2/4 before:-translate-x-2/4 before:rounded-full before:bg-blue-gray-500 before:opacity-0 before:transition-opacity checked:border-pink-500 checked:bg-pink-500 checked:before:bg-pink-500 hover:before:opacity-10"
                     id="checkbox"
                     name="checkbox"
-                  />
+                    required
+                    />
                   <span className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
